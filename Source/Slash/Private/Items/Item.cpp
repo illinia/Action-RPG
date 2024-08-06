@@ -2,7 +2,6 @@
 
 
 #include "Items/Item.h"
-#include "Slash/DebugMacros.h"
 
 // Sets default values
 AItem::AItem()
@@ -18,7 +17,6 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
-
 	
 }
 
