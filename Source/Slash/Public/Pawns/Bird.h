@@ -29,13 +29,21 @@ protected:
 	virtual void BeginPlay() override;
 	void MoveForward(float Value);
 
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
 	UInputMappingContext* BirdMappingContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
 	UInputAction* MoveAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
+	UInputAction* LookAction;
+
+	void Turn(float Value);
+	void LookUp(float Value);
+	
 	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
 private:
 	UPROPERTY(VisibleAnywhere)
