@@ -7,6 +7,8 @@
 #include "GameFramework/Character.h"
 #include "SlashCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
 
@@ -18,47 +20,52 @@ class SLASH_API ASlashCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ASlashCharacter();
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual void Jump() override;
+	// virtual void Jump() override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category=Input)
-	UInputMappingContext* SlashContext;
-
-	UPROPERTY(EditAnywhere, Category=Input)
-	UInputAction* MovementAction;
-
-	UPROPERTY(EditAnywhere, Category=Input)
-	UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, Category=Input)
-	UInputAction* JumpAction;
-
-	UPROPERTY(EditAnywhere, Category=Input)
-	UInputAction* EKeyAction;
-
-	UPROPERTY(EditAnywhere, Category=Input)
-	UInputAction* AttackAction;
-
-	UPROPERTY(EditAnywhere, Category=Input)
-	UInputAction* DodgeAction;
-
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
-	void EKeyPressed();
-	virtual void Attack();
-	void Dodge();
+	// UPROPERTY(EditAnywhere, Category=Input)
+	// UInputMappingContext* SlashContext;
+	//
+	// UPROPERTY(EditAnywhere, Category=Input)
+	// UInputAction* MovementAction;
+	//
+	// UPROPERTY(EditAnywhere, Category=Input)
+	// UInputAction* LookAction;
+	//
+	// UPROPERTY(EditAnywhere, Category=Input)
+	// UInputAction* JumpAction;
+	//
+	// UPROPERTY(EditAnywhere, Category=Input)
+	// UInputAction* EKeyAction;
+	//
+	// UPROPERTY(EditAnywhere, Category=Input)
+	// UInputAction* AttackAction;
+	//
+	// UPROPERTY(EditAnywhere, Category=Input)
+	// UInputAction* DodgeAction;
+	//
+	// void Move(const FInputActionValue& Value);
+	// void Look(const FInputActionValue& Value);
+	// void EKeyPressed();
+	// virtual void Attack();
+	// void Dodge();
 
 	void MoveForward(float Value);
+	void MoveRight(float Value);
+	void Turn(float Value);
+	void LookUp(float Value);
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* CameraBoom;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* ViewCamera;
 
 };
