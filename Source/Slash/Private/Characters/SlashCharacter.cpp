@@ -2,12 +2,14 @@
 
 
 #include "Characters/SlashCharacter.h"
+#include "Characters/SlashCharacter.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GroomComponent.h"
 
 // Sets default values
 ASlashCharacter::ASlashCharacter()
@@ -28,6 +30,14 @@ ASlashCharacter::ASlashCharacter()
 
     ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
     ViewCamera->SetupAttachment(CameraBoom);
+
+    Hair = CreateDefaultSubobject<UGroomComponent>(TEXT("Hair"));
+    Hair->SetupAttachment(GetMesh());
+    Hair->AttachmentName = FString("head");
+
+    Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
+    Eyebrows->SetupAttachment(GetMesh());
+    Eyebrows->AttachmentName = FString("head");
 	
 }
 
