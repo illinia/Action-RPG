@@ -3,6 +3,7 @@
 
 #include "Items/Item.h"
 
+#include "Characters/SlashCharacter.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values
@@ -40,10 +41,10 @@ float AItem::TransformedCos()
 
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	const FString OtherActorName = OtherActor->GetName();
-	if (GEngine)
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, FString(TEXT("OnSphereOverlap: ")) + OtherActorName);
+		SlashCharacter->SetOverlappingItem(this);
 		
 	}
 }
@@ -51,9 +52,12 @@ void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	FString OtherActorName = OtherActor->GetName();
-	if (GEngine) GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Blue, FString(TEXT("OnSphereEndOverlap")) + OtherActorName);
-	
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter)
+	{
+		SlashCharacter->SetOverlappingItem(nullptr);
+		
+	}
 }
 
 // Called every frame
