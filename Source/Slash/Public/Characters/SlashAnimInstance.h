@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SlashCharacter.h"
 #include "Animation/AnimInstance.h"
 #include "SlashAnimInstance.generated.h"
 
@@ -31,4 +32,6 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category=Movement)
 	bool IsFalling;
+
+	ECharacterState CharacterState;
 };
