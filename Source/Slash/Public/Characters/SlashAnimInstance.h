@@ -21,7 +21,7 @@ public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-	UPROPERTY(BlueprintReadOnly, Category=Movement)
+	UPROPERTY(BlueprintReadOnly, Category=SlashAnimInstance)
 	ASlashCharacter* SlashCharacter;
 
 	UPROPERTY(BlueprintReadOnly, Category=Movement)
