@@ -11,6 +11,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GroomComponent.h"
 #include "Items/Weapons/Weapon.h"
+#include "Animation/AnimMontage.h"
 
 // Sets default values
 ASlashCharacter::ASlashCharacter()
@@ -149,6 +150,29 @@ void ASlashCharacter::EKeyPressed()
 	}
 }
 
+void ASlashCharacter::Attack()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && AttackMontage)
+	{
+		AnimInstance->Montage_Play(AttackMontage);
+		int32 Selection = FMath::RandRange(0, 1);
+		FName SectionName = FName();
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			break;
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+		default:
+			break;
+		}
+		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+	}
+}
+
 // Called every frame
 void ASlashCharacter::Tick(float DeltaTime)
 {
@@ -178,6 +202,7 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Equip"), IE_Pressed, this, &ASlashCharacter::EKeyPressed);
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ASlashCharacter::Attack);
 	
 }
 
