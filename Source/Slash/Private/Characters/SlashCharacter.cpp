@@ -105,7 +105,7 @@ void ASlashCharacter::BeginPlay()
 
 void ASlashCharacter::MoveForward(float Value)
 {
-	if (ActionState == EActionState::EAS_Attacking) return;
+	if (ActionState != EActionState::EAS_Unoccupied) return;
 	if (Controller && (Value != 0.f))
 	{
 		const FRotator ControlRotation = GetControlRotation();
@@ -118,7 +118,7 @@ void ASlashCharacter::MoveForward(float Value)
 
 void ASlashCharacter::MoveRight(float Value)
 {
-	if (ActionState == EActionState::EAS_Attacking) return;
+	if (ActionState != EActionState::EAS_Unoccupied) return;
 	if (Controller && (Value != 0.f))
 	{
 		const FRotator ControlRotation = GetControlRotation();
@@ -133,13 +133,11 @@ void ASlashCharacter::MoveRight(float Value)
 void ASlashCharacter::Turn(float Value)
 {
 	AddControllerYawInput(Value);
-	
 }
 
 void ASlashCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
-	
 }
 
 void ASlashCharacter::EKeyPressed()
@@ -158,11 +156,13 @@ void ASlashCharacter::EKeyPressed()
 		{
 			PlayEquipMontage(FName("Unequip"));
 			CharacterState = ECharacterState::ECS_Unequipped;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
-		if (CanArm())
+		else if (CanArm())
 		{
 			PlayEquipMontage(FName("Equip"));
 			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
 	}
 }
@@ -180,6 +180,27 @@ bool ASlashCharacter::CanArm()
 		EquippedWeapon;
 }
 
+void ASlashCharacter::Disarm()
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("SpineSocket"));
+	}
+}
+
+void ASlashCharacter::Arm()
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
+	}
+}
+
+void ASlashCharacter::FinishEquipping()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 void ASlashCharacter::Attack()
 {
 	if (CanAttack())
@@ -192,7 +213,6 @@ void ASlashCharacter::Attack()
 bool ASlashCharacter::CanAttack()
 {
 	return ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_Unequipped;
-	
 }
 
 void ASlashCharacter::PlayAttackMontage()

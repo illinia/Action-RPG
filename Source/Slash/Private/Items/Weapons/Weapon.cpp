@@ -5,10 +5,15 @@
 
 #include "Characters/SlashCharacter.h"
 
-void AWeapon::Equip(USceneComponent* InParent, FName InSocket)
+void AWeapon::AttachMeshToSocket(USceneComponent* InParent, FName InSocket)
 {
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocket);
+}
+
+void AWeapon::Equip(USceneComponent* InParent, FName InSocket)
+{
+	AttachMeshToSocket(InParent, InSocket);
 	ItemState = EItemState::EIS_Equipped;
 }
 
