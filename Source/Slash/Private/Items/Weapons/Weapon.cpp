@@ -2,19 +2,30 @@
 
 
 #include "Items/Weapons/Weapon.h"
-
 #include "Characters/SlashCharacter.h"
-
-void AWeapon::AttachMeshToSocket(USceneComponent* InParent, FName InSocket)
-{
-	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
-	ItemMesh->AttachToComponent(InParent, TransformRules, InSocket);
-}
+#include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocket)
 {
 	AttachMeshToSocket(InParent, InSocket);
 	ItemState = EItemState::EIS_Equipped;
+	if (EquipSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, EquipSound, GetActorLocation());
+	}
+	if (SphereComponent)
+	{
+		SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		
+	}
+}
+
+void AWeapon::AttachMeshToSocket(USceneComponent* InParent, FName InSocket)
+{
+	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
+	ItemMesh->AttachToComponent(InParent, TransformRules, InSocket);
+	
 }
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
