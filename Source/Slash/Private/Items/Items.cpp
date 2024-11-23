@@ -14,6 +14,11 @@ void AItems::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Warning, TEXT("Begin Play Called!"))
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 60.f, FColor::Cyan, FString("Item OnScreen Message!"));
+	}
 }
 
 void AItems::Tick(float DeltaTime)
