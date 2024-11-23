@@ -10,7 +10,6 @@
 AItems::AItems()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 void AItems::BeginPlay()
@@ -22,13 +21,13 @@ void AItems::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Movement rate in units of cm/s
-	float MovementRate = 50.f;
-	float RotationRate = 45.f;
+	RunningTime += DeltaTime;
 	
-	// MovementRate * DeltaTime (cm/s) * (s/frame) = (cm/frame)
-	AddActorWorldOffset(FVector(MovementRate * DeltaTime, 0.f, 0.f));
-	AddActorWorldRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
+	float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);
+
+	AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
+	
+	
 	DRAW_SPHERE_SingleFrame(GetActorLocation());
 	DRAW_VECTOR_SingleFrame(GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100.f)
 }
